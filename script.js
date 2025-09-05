@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(name_chars[i] == '.' && !(i-2 == mayus_pos)) name_chars[i] = ''
             if(name_chars[i] == "'" && !(i-1 == mayus_pos)) name_chars[i] = '' 
 
-            if (!(/^[A-Z]$/.test(name_chars[mayus_pos]))){
+            if (!(/^[A-ZÁÉÍÓÚÜ]$/.test(name_chars[mayus_pos]))){
                 name_chars[mayus_pos] = ""
             }
 
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (name_chars[i-1] == '.') name_chars[i] = '' 
                 if (name_chars[i-1] == "'") name_chars[i] = '' 
 
-                name_chars[i] = name_chars[i].replace(/[^a-z]/g, '');
+                name_chars[i] = name_chars[i].replace(/[^a-záéíóúüñ]/g, '');
             }
         }
         name.value = name_chars.join('')
@@ -105,10 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
     lastname_p.addEventListener('input', () =>{
         let lastname_chars = lastname_p.value.split("");
 
-        if (!(/^[A-Z]$/.test(lastname_chars[0]))) lastname_chars[0] = ''
+        if (!(/^[A-ZÁÉÍÓÚÜ]$/.test(lastname_chars[0]))) lastname_chars[0] = ''
 
         for(i=1; i<lastname_chars.length; i++){
-            if (!(/^[a-z]$/.test(lastname_chars[i]))) lastname_chars[i] = ''
+            if (!(/^[a-záéíóúüñ]$/.test(lastname_chars[i]))) lastname_chars[i] = ''
         }
 
         lastname_p.value = lastname_chars.join('') 
@@ -116,14 +116,17 @@ document.addEventListener('DOMContentLoaded', () => {
     lastname_p.addEventListener('focus', () => {
         lastname_p.select();
     })
+    
 
     lastname_m.addEventListener('input', () =>{
         let lastname_chars = lastname_m.value.split("");
 
-        if (!(/^[A-Z]$/.test(lastname_chars[0]))) lastname_chars[0] = ''
+        // Primera letra mayúscula CON tildes
+        if (!(/^[A-ZÁÉÍÓÚÜ]$/.test(lastname_chars[0]))) lastname_chars[0] = ''
 
         for(i=1; i<lastname_chars.length; i++){
-            if (!(/^[a-z]$/.test(lastname_chars[i]))) lastname_chars[i] = ''
+            // Resto en minúsculas CON tildes
+            if (!(/^[a-záéíóúüñ]$/.test(lastname_chars[i]))) lastname_chars[i] = ''
         }
 
         lastname_m.value = lastname_chars.join('') 
@@ -133,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     street.addEventListener('input', () => {
-        street.value = street.value.replace(/[^A-Za-z0-9\s]/g, '')
+        street.value = street.value.replace(/[^A-Za-záéíóúüÁÉÍÓÚÜñÑ0-9\s]/g, '')
         let street_chars = street.value.split('');
         for(let i=0; i<street_chars.length; i++){
             if (street_chars[i] == ' ' && street_chars[i-1] == ' ' ) street_chars[i] = ''
@@ -145,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     col.addEventListener('input', () => {
-        col.value = col.value.replace(/[^A-Za-z0-9\s]/g, '')
+        col.value = col.value.replace(/[^A-Za-záéíóúüÁÉÍÓÚÜñÑ0-9\s]/g, '')
         let col_chars = col.value.split('');
         for(let i=0; i<col_chars.length; i++){
             if (col_chars[i] == ' ' && col_chars[i-1] == ' ' ) col_chars[i] = ''
