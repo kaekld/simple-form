@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const street = document.getElementById('street')
     const col = document.getElementById('col')
     const extnum = document.getElementById('extnum')
+    const button = document.querySelector(".form_submit")
 
     // evento para el input en el campo del curp 
     curp.addEventListener('input', () => {
@@ -155,7 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
         col.select();
     })
 
-
     extnum.addEventListener('input', ()=>{
         let extnum_chars = extnum.value.split('')
         let band = false
@@ -172,6 +172,26 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     extnum.addEventListener('focus', () => {
         extnum.select();
+    })
+
+    button.addEventListener('click', (e) =>{
+        e.preventDefault();
+        if (
+            curp.value.length < 18 ||
+            name.value.length < 2  ||
+            age.value == ''  ||
+            cp.value == ''  ||
+            lastname_m.value.length < 2  ||
+            lastname_p.value.length < 2 ||
+            street.value.length < 2 || 
+            col.value.length < 2 ||
+            extnum.value == '' 
+        ){
+            document.getElementById('message').innerHTML = `<p class="message">DEBES RELLENAR TODOS LOS CAMPOS</p>`
+        } else {
+            document.querySelector('.form').reset()
+            document.getElementById('message').innerHTML = `<p class="message">DATOS ENVIADOS CORRECTAMENTE</p>`
+        }
     })
 
 });
