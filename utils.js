@@ -124,3 +124,15 @@ const streetValidate = (street) => {
    
     return streetInput.join('');
 };
+
+const invalidNotification = (value, callback) => {
+    if (callback(value.value)) {
+            value.style["color"] = "#860b0bff";
+            value.style["background-color"] = "#ebddddff";
+            value.style["transition"] = ".5s"
+        }else{
+            value.style["color"] = "#000000ff";
+            value.style["background-color"] = "#ffffffff";
+            value.style["transition"] = ".5s"
+        }
+}

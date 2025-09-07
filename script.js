@@ -24,13 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
         let curp_p5 = curp_copy.slice(17,18).replace(/[^0-9]/g, '');
 
         curp.value = curp_p1 + curp_p2 + curp_p3 + curp_p4 + curp_p5
+
         curp.setSelectionRange(start,end)
     });
     curp.addEventListener('focus', () => {
         curp.select();
     })
     curp.addEventListener('blur', () =>{
-        if (curp.value.length < 18) curp.value = ''
+        invalidNotification(curp, (value) => value.length < 18)
     })
 
     // === VERIFICAR LA EDAD CORRECTAMENTE ===
@@ -47,6 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     age.addEventListener('focus', () => {
         age.select();
+    })
+    age.addEventListener('blur', () => {
+        invalidNotification(age, (value) => value < 1 )
     })
 
     // === EL CODIGO POSTAL NADA MÁS === 
@@ -75,6 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
     sex.addEventListener('focus', () => {
         sex.select();
     })
+    sex.addEventListener('blur', () => {
+        invalidNotification(sex, (value) => value.length < 1 )
+    })
 
     // === VERIFICACION DEL NOMBRE CON LOS REQUISITOS ===
     name.addEventListener('input', () => {
@@ -92,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         name.value = name_chars.join('').replace(/\s+/g, ' ').trim();
         name.value = name.value.replace(/\s[A-ZÁÉÍÓÚÜÑ]\s/g, ' ');
         name.value = nameValidate(name.value)
+        invalidNotification(name, (value) => value.length < 2 )
     })
 
     // === VERIFICACION DEL APELLIDO PARTERNO CON LOS REQUISITOS ===
@@ -107,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     lastname_p.addEventListener('blur' , ()=>{
         lastname_p.value = lastnameValidate(lastname_p.value)
+        invalidNotification(lastname_p, (value) => value.length < 2 )
     })
 
     // === VERIFICACION DEL APELLIDO PARTERNO CON LOS REQUISITOS ===
@@ -122,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     lastname_m.addEventListener('blur' , ()=>{
         lastname_m.value = lastnameValidate(lastname_m.value)
+        invalidNotification(lastname_m, (value) => value.length < 2 )
     })
 
     // === VALIDACION DE LA CALLE ===
@@ -135,7 +145,8 @@ document.addEventListener('DOMContentLoaded', () => {
         street.select();
     })
     street.addEventListener('blur', () => {
-        street.value = streetValidate(street.value);      
+        street.value = streetValidate(street.value);   
+        invalidNotification(street, (value) => value.length < 2 )
     })
 
     // === VALIDACION DE LA CCOLONIA ===
@@ -150,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     col.addEventListener('blur', () => {
         col.value = streetValidate(col.value);      
+        invalidNotification(col, (value) => value.length < 2 )
     })
 
     // === VALIDACION DEL NUM. EXTERIOR ===
@@ -170,15 +182,17 @@ document.addEventListener('DOMContentLoaded', () => {
     extnum.addEventListener('focus', () => {
         extnum.select();
     })
-
+    extnum.addEventListener('blur', () => {
+        invalidNotification(extnum, (value) => value === '' )
+    })
     // === EL PUTISIMO BOTON ===
     button.addEventListener('click', (e) =>{
         e.preventDefault();
         if (
             curp.value.length < 18 ||
-            name.value.length < 2  ||
             age.value == ''  ||
             cp.value == ''  ||
+            name.value.length < 2  ||
             lastname_m.value.length < 2  ||
             lastname_p.value.length < 2 ||
             street.value.length < 2 || 
