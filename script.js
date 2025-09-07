@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
     const curp = document.getElementById('curp');
     const age = document.getElementById('age');
     const name = document.getElementById('name');
@@ -7,15 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const sex = document.getElementById('sex');
     const lastname_p = document.getElementById('lastname_p');
     const lastname_m = document.getElementById('lastname_m');
-    const street = document.getElementById('street')
-    const col = document.getElementById('col')
-    const extnum = document.getElementById('extnum')
-    const button = document.querySelector(".form_submit")
+    const street = document.getElementById('street');
+    const col = document.getElementById('col');
+    const extnum = document.getElementById('extnum');
+    const button = document.querySelector(".form_submit");
 
-    // evento para el input en el campo del curp 
     curp.addEventListener('input', () => {
-
-        // variable temporal para copiar la cadena del curp y manipularlo
         let curp_copy = curp.value;
 
         if (curp_copy.length > 18) curp_copy = curp_copy.slice(0,19);
@@ -31,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         curp.select();
     })
 
+    // === VERIFICAR LA EDAD CORRECTAMENTE ===
     age.addEventListener('input', () =>{
         let age_copy = age.value;
 
@@ -46,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         age.select();
     })
 
-    // eventos relacionados con el codigo postal
+    // === EL CODIGO POSTAL NADA MÁS === 
     cp.addEventListener('input', () => {
         let cp_copy = cp.value;
         cp_copy = cp_copy.slice(0,5).replace(/[^0-9]/g,'')
@@ -63,77 +60,64 @@ document.addEventListener('DOMContentLoaded', () => {
         cp.select();
     })
 
+    // === VERIFICAR QUE EL SEXO NOMAS SEA H/M ===
     sex.addEventListener('input', () => {
-        let sex_copy = sex.value;
-        sex_copy = sex_copy.slice(0,1).replace(/[^HhMm]/g,'')
-        sex.value = sex_copy
+        let sexInput = sex.value
+        sexInput = /^[HhMm]$/.test(sexInput[0]) ? sexInput.toUpperCase() : ''
+        sex.value = sexInput.slice(0,1)
     })
     sex.addEventListener('focus', () => {
         sex.select();
     })
 
-
+    // === VERIFICACION DEL NOMBRE CON LOS REQUISITOS ===
     name.addEventListener('input', () => {
-        let name_chars = name.value.split("");
-        let mayus_pos = 0;
+        let start = name.selectionStart;
+        let end = name.selectionEnd;
+        name.value = nameValidate(name.value)
+        name.setSelectionRange(start, end);
 
-        for(i=0; i<name_chars.length; i++){
-
-            if (name_chars[i] == ' ' && i-1 == mayus_pos) name_chars[i] = '' 
-            if(name_chars[i] == ' ') mayus_pos = i+1
-            
-            if(name_chars[i] == '.' && !(i-2 == mayus_pos)) name_chars[i] = ''
-            if(name_chars[i] == "'" && !(i-1 == mayus_pos)) name_chars[i] = '' 
-
-            if (!(/^[A-ZÁÉÍÓÚÜ]$/.test(name_chars[mayus_pos]))){
-                name_chars[mayus_pos] = ""
-            }
-
-            if (i > mayus_pos && name_chars[i]!=' ' && name_chars[i]!='.' && name_chars[i]!="'"){
-                if (name_chars[i-1] == '.') name_chars[i] = '' 
-                if (name_chars[i-1] == "'") name_chars[i] = '' 
-
-                name_chars[i] = name_chars[i].replace(/[^a-záéíóúüñ]/g, '');
-            }
-        }
-        name.value = name_chars.join('')
     })
     name.addEventListener('focus', () => {
         name.select();
     })
+    name.addEventListener('blur', () => {
+        let name_chars = name.value.split("");
+        name.value = name_chars.join('').replace(/\s+/g, ' ').trim();
+        name.value = name.value.replace(/\s[A-ZÁÉÍÓÚÜÑ]\s/g, ' ');
+        name.value = nameValidate(name.value)
+    })
 
+    // === VERIFICACION DEL APELLIDO PARTERNO CON LOS REQUISITOS ===
     lastname_p.addEventListener('input', () =>{
-        let lastname_chars = lastname_p.value.split("");
+        let start = lastname_p.selectionStart;
+        let end = lastname_p.selectionEnd;
+        lastname_p.value = lastnameValidate(lastname_p.value)
+        lastname_p.setSelectionRange(start, end);
 
-        if (!(/^[A-ZÁÉÍÓÚÜ]$/.test(lastname_chars[0]))) lastname_chars[0] = ''
-
-        for(i=1; i<lastname_chars.length; i++){
-            if (!(/^[a-záéíóúüñ]$/.test(lastname_chars[i]))) lastname_chars[i] = ''
-        }
-
-        lastname_p.value = lastname_chars.join('') 
     })
     lastname_p.addEventListener('focus', () => {
         lastname_p.select();
     })
-    
+    lastname_p.addEventListener('blur' , ()=>{
+        lastname_p.value = lastnameValidate(lastname_p.value)
+    })
 
+    // === VERIFICACION DEL APELLIDO PARTERNO CON LOS REQUISITOS ===
     lastname_m.addEventListener('input', () =>{
-        let lastname_chars = lastname_m.value.split("");
+        let start = lastname_m.selectionStart;
+        let end = lastname_m.selectionEnd;
+        lastname_m.value = lastnameValidate(lastname_m.value)
+        lastname_m.setSelectionRange(start, end);
 
-        // Primera letra mayúscula CON tildes
-        if (!(/^[A-ZÁÉÍÓÚÜ]$/.test(lastname_chars[0]))) lastname_chars[0] = ''
-
-        for(i=1; i<lastname_chars.length; i++){
-            // Resto en minúsculas CON tildes
-            if (!(/^[a-záéíóúüñ]$/.test(lastname_chars[i]))) lastname_chars[i] = ''
-        }
-
-        lastname_m.value = lastname_chars.join('') 
     })
     lastname_m.addEventListener('focus', () => {
         lastname_m.select();
     })
+    lastname_m.addEventListener('blur' , ()=>{
+        lastname_m.value = lastnameValidate(lastname_m.value)
+    })
+
 
     street.addEventListener('input', () => {
         street.value = street.value.replace(/[^A-Za-záéíóúüÁÉÍÓÚÜñÑ0-9\s]/g, '')
