@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     cp.addEventListener('blur', () => {
         let cp_copy = cp.value;
         while (cp_copy.length < 5){
-            cp_copy = cp_copy.slice(0, cp_copy.length) + '0'
+            cp_copy = 0 + cp_copy.slice(0, cp_copy.length) 
         }
         cp.value = cp_copy
     })
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         lastname_m.value = lastnameValidate(lastname_m.value)
     })
 
-    // === VALIDACION DE LA CALLE
+    // === VALIDACION DE LA CALLE ===
     street.addEventListener('input', () => {
         let start = street.selectionStart;
         let end = street.selectionEnd;
@@ -138,6 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         street.value = streetValidate(street.value);      
     })
 
+    // === VALIDACION DE LA CCOLONIA ===
     col.addEventListener('input', () => {
         let start = col.selectionStart;
         let end = col.selectionEnd;
@@ -151,6 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
         col.value = streetValidate(col.value);      
     })
 
+    // === VALIDACION DEL NUM. EXTERIOR ===
     extnum.addEventListener('input', ()=>{
         let extnum_chars = extnum.value.split('')
         let end = 8
@@ -169,6 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
         extnum.select();
     })
 
+    // === EL PUTISIMO BOTON ===
     button.addEventListener('click', (e) =>{
         e.preventDefault();
         if (

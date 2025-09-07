@@ -1,4 +1,4 @@
-// Convertir a arrow functions
+// FUNCION PARA VALIDAR NOMBRE
 const nameValidate = (input_value) => {
     let name_chars = input_value.split("");
     let mayus_pos = 0;
@@ -42,26 +42,43 @@ const nameValidate = (input_value) => {
     return name_chars.join('');
 };
 
+// FUNCION PARA VALIDAR LOS APELLIDOS
 const lastnameValidate = (input_value) => {
-    let input_chars = input_value.split("");
+       let name_chars = input_value.split("");
+    let mayus_pos = 0;
     
-    if (/^[a-záéíóúüñ]$/i.test(input_chars[0])) {
-        input_chars[0] = input_chars[0].toUpperCase();
+    if ((/^[a-záéíóúüñ]$/i.test(name_chars[0])) || /^[A-ZÁÉÍÓÚÜ]$/.test(name_chars[0])) {
+        name_chars[0] = name_chars[0].toUpperCase();
     } else {
-        input_chars[0] = '';
+        name_chars[0] = '';
     }
     
-    for(let i = 1; i < input_chars.length; i++){
-        if(/^[a-záéíóúüñ]+$/i.test(input_chars[i])) {
-            input_chars[i] = input_chars[i].toLowerCase();
+    for(let i = 1; i < name_chars.length; i++){
+        if(/^[A-ZÁÉÍÓÚÜ]$/.test(name_chars[i])) mayus_pos = i;
+        console.log("Mayus position = " + mayus_pos);
+        
+        if (name_chars[0] === ' ') name_chars[0] = '';
+        if (name_chars[i-1] === ' ' && !(/^[A-ZÁÉÍÓÚÜ]$/i.test(name_chars[i]))) name_chars[i] = '';
+        if (name_chars[i] === ' ' && (name_chars[i-1] === ' ' || name_chars[i+1] === ' ')) name_chars[i] = '';
+        
+        if (name_chars[i-1] === ' '){
+            name_chars[i] = name_chars[i].toUpperCase();
+            continue;
+        }
+        
+        if (/^[a-záéíóúüñ]$/i.test(name_chars[i]) && name_chars[i-1] !== "'" && name_chars[i-1] !== ".") {
+            name_chars[i] = name_chars[i].toLowerCase();
+        } else if (name_chars[i] === ' ') {
+            name_chars[i] = ' ';
         } else {
-            input_chars[i] = '';
+            name_chars[i] = '';
         }
     }
     
-    return input_chars.join('');
+    return name_chars.join('');
 };
 
+// FUNCION PARA VALIDAR NOMBRE DE CALLE Y COLONIA
 const streetValidate = (street) => {
     let mayusPos = 0;
     let streetInput = street.split('');
