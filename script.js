@@ -12,9 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const button = document.querySelector(".form_submit");
 
     curp.addEventListener('input', () => {
-        let curp_copy = curp.value;
+        let curp_copy = curp.value.toUpperCase();
+        let start = curp.selectionStart;
+        let end = curp.selectionEnd;
 
-        if (curp_copy.length > 18) curp_copy = curp_copy.slice(0,19);
+        if (curp_copy.length > 18) curp_copy = curp_copy.slice(0,18);
         let curp_p1 = curp_copy.slice(0,4).replace(/[^A-Z]/g, '');
         let curp_p2 = curp_copy.slice(4,10).replace(/[^0-9]/g, '');
         let curp_p3 = curp_copy.slice(10,16).replace(/[^A-Z]/g, '');
@@ -22,9 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
         let curp_p5 = curp_copy.slice(17,18).replace(/[^0-9]/g, '');
 
         curp.value = curp_p1 + curp_p2 + curp_p3 + curp_p4 + curp_p5
+        curp.setSelectionRange(start,end)
     });
     curp.addEventListener('focus', () => {
         curp.select();
+    })
+    curp.addEventListener('blur', () =>{
+        if (curp.value.length < 18) curp.value = ''
     })
 
     // === VERIFICAR LA EDAD CORRECTAMENTE ===
@@ -118,44 +124,46 @@ document.addEventListener('DOMContentLoaded', () => {
         lastname_m.value = lastnameValidate(lastname_m.value)
     })
 
-
+    // === VALIDACION DE LA CALLE
     street.addEventListener('input', () => {
-        street.value = street.value.replace(/[^A-Za-záéíóúüÁÉÍÓÚÜñÑ0-9\s]/g, '')
-        let street_chars = street.value.split('');
-        for(let i=0; i<street_chars.length; i++){
-            if (street_chars[i] == ' ' && street_chars[i-1] == ' ' ) street_chars[i] = ''
-        }        
-        street.value = street_chars.join('')
+        let start = street.selectionStart;
+        let end = street.selectionEnd;
+        street.value = streetValidate(street.value);      
+        street.setSelectionRange(start,end);   
     })
     street.addEventListener('focus', () => {
         street.select();
     })
+    street.addEventListener('blur', () => {
+        street.value = streetValidate(street.value);      
+    })
 
     col.addEventListener('input', () => {
-        col.value = col.value.replace(/[^A-Za-záéíóúüÁÉÍÓÚÜñÑ0-9\s]/g, '')
-        let col_chars = col.value.split('');
-        for(let i=0; i<col_chars.length; i++){
-            if (col_chars[i] == ' ' && col_chars[i-1] == ' ' ) col_chars[i] = ''
-        }        
-        col.value = col_chars.join('')      
+        let start = col.selectionStart;
+        let end = col.selectionEnd;
+        col.value = streetValidate(col.value);      
+        col.setSelectionRange(start,end);   
     })
     col.addEventListener('focus', () => {
         col.select();
     })
+    col.addEventListener('blur', () => {
+        col.value = streetValidate(col.value);      
+    })
 
     extnum.addEventListener('input', ()=>{
         let extnum_chars = extnum.value.split('')
-        let band = false
         let end = 8
         for(let i=0; i<extnum_chars.length; i++){
-            if (extnum_chars[i] == ' ') band = true
-            if (!(/^[0-9]$/.test(extnum_chars[i])) && !band) extnum_chars[i] = '' 
-            if (band && extnum_chars[i]!=' '){
-                extnum_chars[i] = extnum_chars[i].replace(/[^A-Z]/g, '')
-                end = i+1
+            if (/^[A-Z]$/i.test(extnum_chars[i])){
+                extnum_chars[i] = extnum_chars[i].toUpperCase()
+                end = i
+                break
             }
+            else if (!(/^[0-9]$/.test(extnum_chars[i]))) 
+                extnum_chars[i] = ''
         }
-        extnum.value = extnum_chars.join('').slice(0,end)
+        extnum.value = extnum_chars.join('').slice(0,end+1)
     })
     extnum.addEventListener('focus', () => {
         extnum.select();
